@@ -1,0 +1,5 @@
+Grass
+ocean
+sky
+rocks
+cliffs

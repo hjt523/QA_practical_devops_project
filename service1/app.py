@@ -1,8 +1,5 @@
 from flask import Flask, redirect, render_template, request,url_for 
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import desc
-from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField
 import requests
 
 
@@ -16,12 +13,15 @@ db = SQLAlchemy(app) # create SQLALchemy object
 
 @app.route("/", methods =["GET","POST"]) # main Page
 def main():
+    #doodle = "Example output"
     #if request.method == "POST" :
-        aesthetic = requests.get("http://service2:5000/service2").text
-        subject = requests.get("http://service3:5000/service3").text
-        doodle = requests.post("http://service4:5000/service4", aesthetic = aesthetic, subject = subject).text
-        print (doodle)
-        return render_template("main.html", doodle = doodle )
+    aes = requests.get("http://service2:5000/service2").text
+    print(aes)
+    sub = requests.get("http://service3:5000/service3").text
+    
+    doodle = requests.post("http://service4:5000/service4", data= aes + "_"+sub).text
+    print (doodle)
+    return render_template("main.html", doodle = doodle )
     #return render_template("main.html", doodle = doodle)
 
 if __name__=='__main__':
