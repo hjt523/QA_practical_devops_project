@@ -1,0 +1,10 @@
+moody
+warm
+cold
+dark
+light
+glowing
+lively
+excited
+fast
+slow
