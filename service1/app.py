@@ -2,11 +2,11 @@ from flask import Flask, redirect, render_template, request,url_for
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import desc
 import requests
-
+from os import getenv
 
 app = Flask(__name__) # Creating Flask Object
 
-app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///data.db" # Set the connection string to connect to the database
+app.config['SQLALCHEMY_DATABASE_URI'] = getenv('DATABASE_URI')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False 
 app.config['SECRET_KEY'] = ""
 
