@@ -6,9 +6,9 @@
 <p>
     This app generates drawing ideas for when you're completely stumped on what to draw but fancy relaxing anyway ^^
 </p>
-<p>
-    Ideas shown in box below!
-</p>
+
+   <h2> Ideas shown in box below! </h2>
+
 <br>
 <div style="width:500px;height:100px;border:1px solid rgb(116, 72, 219); background-color: rgb(116, 72, 219)">
     <p style="color:ivory">
@@ -23,8 +23,15 @@
     <td><input type="submit" value= "Generate new idea :D "></td>
 </form>
 
+<h2> Last Few Ideas </h2>
+<div style="width:500px;height:200px;border:1px solid rgb(116, 72, 219); background-color: rgb(116, 72, 219)">
+    <p>
+        {% for prior in doodlesprior %}
+           <p style="color:ivory">{{ prior.doodle }}</p> 
+        {% endfor %}
+    </p>
+</div>
 <br>
-
 <a href=https://github.com/hjt523/QA_practical_devops_project.git> For further documentation and access to the source code, visit my Github page!
 </body>
 </html>
