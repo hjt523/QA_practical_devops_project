@@ -5,8 +5,7 @@ import requests
 from os import getenv
 
 app = Flask(__name__) # Creating Flask Object
-
-app.config['SQLALCHEMY_DATABASE_URI'] = getenv('DATABASE_URI')
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root@34.105.178.235/prior'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False 
 app.config['SECRET_KEY'] = ""
 
@@ -15,7 +14,6 @@ class prior(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     doodle = db.Column(db.String(60),nullable=False)
 
-db.drop_all()
 db.create_all()
 
 @app.route("/", methods =["GET","POST"]) # main Page
