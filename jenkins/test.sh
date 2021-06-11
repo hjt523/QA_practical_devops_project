@@ -12,6 +12,9 @@ source venv/bin/activate
 pip3 install pytest
 pip3 install pytest-cov
 
+# Includes the stuff for the application(s)
+pip3 install -r test_requirements.txt 
+
 # Service1
 
 cd service1
