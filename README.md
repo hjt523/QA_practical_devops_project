@@ -12,6 +12,23 @@ the previously generated ideas.
 
 
 
+
+
+
+# Pytest Coverage screencaps
+
+Below are screenshots showing that each individual service has 100% coverage.
+
+![image](https://user-images.githubusercontent.com/81659044/121696148-ac1dce00-cac3-11eb-8e49-841a1b347937.png)
+
+![image](https://user-images.githubusercontent.com/81659044/121695731-3f0a3880-cac3-11eb-864a-45c56c390594.png)
+
+![image](https://user-images.githubusercontent.com/81659044/121695585-18e49880-cac3-11eb-95c8-c89b60973141.png)
+
+![image](https://user-images.githubusercontent.com/81659044/121695402-edfa4480-cac2-11eb-80f1-be2554f0adc5.png)
+
+
+
 ## Requirements
 
 - python

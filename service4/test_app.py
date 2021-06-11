@@ -1,0 +1,23 @@
+import pytest
+from flask import Flask, app, redirect, render_template, request,url_for 
+from flask_sqlalchemy import SQLAlchemy
+from flask_testing import TestCase
+from sqlalchemy import desc
+import requests
+from os import getenv
+
+from app import app
+
+class testbase(TestCase):
+    def create_app(self):
+        return app
+
+# Write a test class for testing that the index / about page loads.
+class TestViews(testbase):
+
+    def test_doodle1_get(self):
+        response = self.client.get(url_for('doodle'), data = "test_app")
+        self.assertEqual(response.status_code, 200)
+    def test_doodle2_get(self):
+        response = self.client.get(url_for('doodle'), data = "app_test")
+        self.assertEqual(response.status_code, 200)
