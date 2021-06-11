@@ -2,8 +2,8 @@
 
 # install Requirements
 
-apk update
-apk install python3-venv python3-pip
+apt update
+apt install python3-venv python3-pip
 
 python3 -m venv venv
 source venv/bin/activate
