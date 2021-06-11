@@ -33,6 +33,10 @@ And here's the capture from the test stage of the Jenkins pipeline confirming se
 ![image](https://user-images.githubusercontent.com/81659044/121755851-2b38f380-cb10-11eb-8c5f-65a8987ea45a.png)
 
 
+# Kanban Board and Risk Assessment
+
+Third
+![image](https://user-images.githubusercontent.com/81659044/121756735-0c882c00-cb13-11eb-97e8-d08ce5158a8c.png)
 
 ## Requirements
 
