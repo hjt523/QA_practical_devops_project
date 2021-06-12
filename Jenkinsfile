@@ -1,9 +1,9 @@
 pipeline {
     agent any
-    environment {
-        DOCKER_USERNAME = credentials('DOCKER_USERNAME')
-        
+    environment { 
         DOCKER_PASSWORD = credentials('DOCKER_PASSWORD')
+        DOCKER_USERNAME = credentials('DOCKER_USERNAME')
+
     }
     stages {
         stage('Install Reqs') {
