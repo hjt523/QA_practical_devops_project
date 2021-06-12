@@ -2,20 +2,20 @@ version: "3.8"
 services: 
     service1:
         build: ./service1
-        image: hjtindale/doodle_frontend:latest
+        image: ${DOCKER_USERNAME}/doodle_frontend:latest
         container_name: doodle_frontend
         ports:
         - target: 5000
           published: 80
     service2:
         build: ./service2
-        image: hjtindale/doodle_backend_1:latest
+        image: ${DOCKER_USERNAME}/doodle_backend_1:latest
         container_name: doodle_aesthetics
     service3:
         build: ./service3
-        image: hjtindale/doodle_backend_2:latest
+        image: ${DOCKER_USERNAME}/doodle_backend_2:latest
         container_name: doodle_subjects
     service4:
         build: ./service4
-        image: hjtindale/doodle_backend_3:latest
+        image: ${DOCKER_USERNAME}/doodle_backend_3:latest
         container_name: doodle_doodle
