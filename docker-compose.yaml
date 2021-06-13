@@ -2,7 +2,7 @@ version: "3.8"
 services: 
     service1:
         build: ./service1
-        image: ${DOCKER_USERNAME}/doodle_frontend:latest
+        image: hjtindale/doodle_frontend:latest
         container_name: doodle_frontend
         ports:
         - target: 5000
@@ -13,19 +13,19 @@ services:
           replicas: 4
     service2:
         build: ./service2
-        image: ${DOCKER_USERNAME}/doodle_backend_1:latest
+        image: hjtindale/doodle_backend_1:latest
         container_name: doodle_aesthetics
         deploy:
           replicas: 4
     service3:
         build: ./service3
-        image: ${DOCKER_USERNAME}/doodle_backend_2:latest
+        image: hjtindale/doodle_backend_2:latest
         container_name: doodle_subjects
         deploy:
           replicas: 4
     service4:
         build: ./service4
-        image: ${DOCKER_USERNAME}/doodle_backend_3:latest
+        image: hjtindale/doodle_backend_3:latest
         container_name: doodle_doodle
         deploy:
           replicas: 4
