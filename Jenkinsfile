@@ -3,7 +3,7 @@ pipeline {
     environment { 
         DOCKER_PASSWORD = credentials('DOCKER_PASSWORD')
         DOCKER_USERNAME = credentials('DOCKER_USERNAME')
-
+        DATABASE_URI = credentials('DATABASE_URI')
     }
     stages {
         stage('Install Reqs') {
