@@ -6,7 +6,7 @@ services:
         container_name: doodle_frontend
         ports:
         - target: 5000
-          published: 80
+          published: 5000
     service2:
         build: ./service2
         image: hjtindale/doodle_backend_1:latest
