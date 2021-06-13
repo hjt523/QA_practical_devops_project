@@ -3,7 +3,7 @@ pipeline {
     environment { 
         DOCKER_PASSWORD = credentials('DOCKER_PASSWORD')
         DOCKER_USERNAME = credentials('DOCKER_USERNAME')
-
+        DATABASE_URI = credentials('DATABASE_URI')
     }
     stages {
         stage('Install Reqs') {
@@ -38,8 +38,8 @@ pipeline {
         }
         stage('Deploy') {
             steps {
-                //
-                sh 'echo deploy'
+                // Deploying using shell script
+                sh 'bash jenkins/deploy.sh'
             }
         }
     }
