@@ -7,15 +7,25 @@ services:
         ports:
         - target: 5000
           published: 80
+        environment:
+          DATABASE_URI: ${DATABASE_URI}
+        deploy:
+          replicas: 4
     service2:
         build: ./service2
         image: ${DOCKER_USERNAME}/doodle_backend_1:latest
         container_name: doodle_aesthetics
+        deploy:
+          replicas: 4
     service3:
         build: ./service3
         image: ${DOCKER_USERNAME}/doodle_backend_2:latest
         container_name: doodle_subjects
+        deploy:
+          replicas: 4
     service4:
         build: ./service4
         image: ${DOCKER_USERNAME}/doodle_backend_3:latest
         container_name: doodle_doodle
+        deploy:
+          replicas: 4
