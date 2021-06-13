@@ -38,8 +38,8 @@ pipeline {
         }
         stage('Deploy') {
             steps {
-                //
-                sh 'echo deploy'
+                // Deploying using shell script
+                sh 'bash jenkins/deploy.sh'
             }
         }
     }
