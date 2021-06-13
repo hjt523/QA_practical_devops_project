@@ -33,7 +33,7 @@ pipeline {
         stage('Config Management') {
             steps {
                 // Using Ansible to manage configuration
-                sh 'docker-compose push'
+                sh 'cd ansible && ansible-playbook -i inventory.yaml playbook.yaml '
             }
         }
         stage('Deploy') {
