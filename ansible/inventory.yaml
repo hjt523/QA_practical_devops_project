@@ -6,7 +6,7 @@ all:
     workers:
       hosts:
         worker-a:
-    nginxloadbalancer:
+    load-balancer:
       hosts:
         nginx:
   vars:
