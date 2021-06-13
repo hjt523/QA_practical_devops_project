@@ -19,6 +19,7 @@ source ~/.bashrc
 sudo apt install python3-pip -y
 pip3 install --user ansible
 ansible --version
+ansible-galaxy collection install community.docker
 
 # login
 
