@@ -6,7 +6,6 @@ services:
         container_name: doodle_frontend
         ports:
         - target: 5000
-          published: 80
         environment:
           DATABASE_URI: ${DATABASE_URI}
         deploy:
