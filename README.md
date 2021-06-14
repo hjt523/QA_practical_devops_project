@@ -49,8 +49,17 @@ ENTRYPOINT ["python","app.py"]
 - Is included in each service route, this means each service can be built in an automated way along with any requirements for it to be installed that weren't covered in the initial install phase. Docker Swarm is used to form managers and workers than run the docker images / distribute work across a network. 
 
 Reverse Proxy: NGINX
+- NGINX is the load-balancer, it distributes site usage amongst the various containers to maintain smooth operation, so for example if multiple users want to access service 2 simultaneously NGINX will send them to different copies of that container to balance the workload, it also allows reverse proxying so the users can access the app ran on any node from one frontent point. 
+## This is good for security as you can keep more servers closed to the public / have less vunerability points for hackers.
 
+# Use examples
 
+So upon opening the page you see the last 5 entries to the database below and in the top box a new idea
+![image](https://user-images.githubusercontent.com/81659044/121826573-47739680-ccb0-11eb-8ce5-f8a1e637f7c6.png)
+
+And upon hitting the new idea button: 
+
+![image](https://user-images.githubusercontent.com/81659044/121826608-81449d00-ccb0-11eb-96de-717251ef0316.png)
 
 # Pytest Coverage screencaps And Risk Assessment
 
@@ -79,8 +88,19 @@ And here's the capture from the test stage of the Jenkins pipeline confirming se
 
 # Kanban Board
 
-Third
+Here's some example use of the Kanban Board showing how it was used to coordinate some of the tasks. 
+
+
+![image](https://user-images.githubusercontent.com/81659044/121826484-c9af8b00-ccaf-11eb-85f9-66ffcf0bcd6d.png)
+
+![image](https://user-images.githubusercontent.com/81659044/121826459-9d940a00-ccaf-11eb-8921-4bfc3fb83f98.png)
+
 ![image](https://user-images.githubusercontent.com/81659044/121756735-0c882c00-cb13-11eb-97e8-d08ce5158a8c.png)
+
+# Setup
+
+To get this App working you need to install jenkins on a ubuntu virtual machine and setup, then clone this git repository into a jenkins pipeline project / set it up to follow the main branch. 
+After that create instances and setup firewall permissions for those you intend to use, you'll need to specify the machine names in the ansible playbook yaml in order for them to setup correctly but otherwise building the pipeline should work. 
 
 ## Requirements
 
@@ -92,4 +112,8 @@ Third
 - sql
 - sql_alchemy
 - github ( duh)
-- 
+- pytest
+- pip
+- ansible
+- ansible-galaxy
+
