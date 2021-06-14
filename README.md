@@ -21,10 +21,10 @@ Jenkins then builds and pushes the instances so that they can be retrieved in th
 
  ## Tools Used:
 Kanban Board: Jira
-- Jira was used for keeping track of the User stories / planning out which features need to be added, I chose Jira for it's ease of use and familiarity, examples of how it's used shown further on in the documentation.
+- Jira was used for keeping track of the User stories / planning out which features need to be added, I chose Jira for it's ease of use and familiarity, examples of how it's used shown further on in the documentation. But basically, It supports the agile work method of continuous testing and deployment, as it really enables you to break tasks down into whats needed for the next feature to work. 
 
 Version Control: Git
-- Git is used as version control as it's very easy to modify the source code from either the site or any of the GCP instances ran if need be. It also allows rolling updates through the use of webhooks, so any changes to the code / any new commits can be immediately picked up by Jenkins and incorporated into the live application without a disruption to service ( assuming the changes are light
+- Git is used as version control as it's very easy to modify the source code from either the site or any of the GCP instances ran if need be. It also allows rolling updates through the use of webhooks, so any changes to the code / any new commits can be immediately picked up by Jenkins and incorporated into the live application without a disruption to service ( assuming the changes are light, as large changes can disrupt service). 
 
 CI Server: Jenkins
 - Jenkins pipeline is used as the Continuous integration server for this project, it allows the rolling updates from a git hook as previously mentioned, but also allows the pipeline to be defined ( it's steps such as build, test etc) by a file on the Git site, so it's stages themselves can be modified as a rolling update aswell if need be, instead of just the changes to the python code for example. It also allows us to make use of Pytest quite easily by pashing commands through via bash / shell script, which makes the automated testing of our code quite easily, and due to the way it holds onto logs from each pipeline stage we can check the coverage reports through jenkins whilst the application is live, which allows anything not tested to be ammened in a rolling update.
@@ -46,11 +46,18 @@ WORKDIR /app
 RUN pip install -r requirements.txt
 EXPOSE 5000
 ENTRYPOINT ["python","app.py"]
-- Is included in each service route, this means each service can be built in an automated way along with any requirements for it to be installed that weren't covered in the initial install phase. Docker Swarm is used to form managers and workers than run the docker images / distribute work across a network. 
+- Is included in each service route, this means each service can be built in an automated way along with any requirements for it to be installed that weren't covered in the initial install phase, meaning that services app has all it's requirements for sure / you don't need to install every requirement on every single instance if they don't all need the same tools, reducing build time for the pipeline as a whole. Docker Swarm is used to form managers and workers than run the docker images / distribute work across a network of connected nodes. 
 
 Reverse Proxy: NGINX
-- NGINX is the load-balancer, it distributes site usage amongst the various containers to maintain smooth operation, so for example if multiple users want to access service 2 simultaneously NGINX will send them to different copies of that container to balance the workload, it also allows reverse proxying so the users can access the app ran on any node from one frontent point. 
+- NGINX is the load-balancer, it distributes site usage amongst the various containers to maintain smooth operation, so for example if multiple users want to access service 2 simultaneously NGINX will send them to different copies of that container to balance the workload, it also allows reverse proxying so the users can access the app ran on any node from one frontend point.  
 ## This is good for security as you can keep more servers closed to the public / have less vunerability points for hackers.
+- NGINX is ran in its own container and directs the data to the docker swarm, it can be thought of like the cashier at macdonalds giving directions to the different line cooks, i.e. if a lot of people want fries more people are making fries, not just one person making more. 
+
+The overall Flow of the project should be as follows: 
+
+![image](https://user-images.githubusercontent.com/81659044/121833248-d6d67500-ccc3-11eb-862b-379eceb535cd.png)
+
+Where the tools are defined as above. I chose not to make the code check if anything was pre-installed and skip, as it only reduced the time taken minimally but adds in additional complexity for the scope of the project. The layout here also places testing directly after installing docker etc, which is useful as any that fail the tests get spotted before the container images are built and pushed, which means they're less likely to be passed into the current active deployment. Naturally the Configuration management ( allocating which instances do what container images) comes after the push, so the absolute latest images can be installed on the nodes in development.
 
 # Use examples
 
@@ -63,7 +70,7 @@ And upon hitting the new idea button:
 
 # Pytest Coverage screencaps And Risk Assessment
 
-So below we can see my Risk assessment and Risk assessment matrix, 
+So below we can see my Risk assessment and Risk assessment matrix, with included matrix. Most of the issues for this project can be taken down to security with respect for ports on GCP, however they are all solvable by managing which ports are open / limiting the number of vulnerable points. Overall I found the points to be very useful, especially the point with regards to keeping to time. I had originally planned to develop a much larger application however that would have got in the way of applying the underlying techniques, so following the minimum viable product we arrived at the app we have here. Having fallen behind again however I would have perhaps raised the likelihood of that risk if doing a similar project again to avoid cutting too much before deadline by utilising better planning. 
 ![image](https://user-images.githubusercontent.com/81659044/121832140-48f98a80-ccc1-11eb-9d27-52eadfacc11f.png)
 ![image](https://user-images.githubusercontent.com/81659044/121824936-a680dd80-cca7-11eb-80dd-1deec8bd8490.png)
 
@@ -88,8 +95,7 @@ And here's the capture from the test stage of the Jenkins pipeline confirming se
 
 # Kanban Board
 
-Here's some example use of the Kanban Board showing how it was used to coordinate some of the tasks. 
-
+Here's some example use of the Kanban Board showing how it was used to coordinate some of the tasks and stay working to Agile principles during this project. It's not all inclusive and i did add further tasks when it became apparent. 
 
 ![image](https://user-images.githubusercontent.com/81659044/121826484-c9af8b00-ccaf-11eb-85f9-66ffcf0bcd6d.png)
 
@@ -100,7 +106,10 @@ Here's some example use of the Kanban Board showing how it was used to coordinat
 # Setup
 
 To get this App working you need to install jenkins on a ubuntu virtual machine and setup, then clone this git repository into a jenkins pipeline project / set it up to follow the main branch. 
-After that create instances and setup firewall permissions for those you intend to use, you'll need to specify the machine names in the ansible playbook yaml in order for them to setup correctly but otherwise building the pipeline should work. 
+After that create instances and setup firewall permissions for those you intend to use, you'll need to specify the machine names in the ansible playbook yaml in order for them to setup correctly but otherwise building the pipeline should work. SSH keys need to be generated for the jenkins use on the jenkins instance and given to the other instances so the swarm can be built and connected together.
+
+# Potential improvements
+- Might be cool to incorporate some existing fortran code i have for writing images to provide a sort of pseudo picture of the idea with some randomised element there too? 
 
 ## Requirements
 
