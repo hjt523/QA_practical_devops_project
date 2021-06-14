@@ -16,13 +16,13 @@ def doodle():
         terlist = open("terrain.txt","r")
         terrainlist = terlist.readlines()
         secondary = random.choice(terrainlist)
-        doodle = " A "+ aesthetic + " "+ subject+ " meets the "+ secondary
+        doodle = " A "+ aesthetic + " "+ subject+ " devours the "+ secondary
         return doodle
     else:
         terlist = open("terrain.txt","r")
         terrainlist = terlist.readlines()
         secondary = random.choice(terrainlist)
-        doodle = " A "+ aesthetic+" " +secondary + " populated by many "+ subject+"'s"
+        doodle = " A "+ aesthetic+" " +secondary + " consumed by many "+ subject+"'s"
         return doodle
 
 if __name__=='__main__': app.run(host = "0.0.0.0",port=5000, debug=True)
