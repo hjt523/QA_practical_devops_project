@@ -21,11 +21,11 @@ def main():
     doodle = ""
     doodlesprior = prior.query.order_by(desc(prior.id)).limit(5).all()
     #if request.method == "POST" :
-    aes = requests.get("http://service2:5000/service2").text
+    aes = requests.get("http://doodlestack_service2:5000/service2").text
     
-    sub = requests.get("http://service3:5000/service3").text
+    sub = requests.get("http://doodlestack_service3:5000/service3").text
     
-    doodle = requests.post("http://service4:5000/service4", data= aes + "_"+sub).text
+    doodle = requests.post("http://doodlestack_service4:5000/service4", data= aes + "_"+sub).text
     
     
 

@@ -10,14 +10,74 @@ Service 2 could generate aesthetic, so for one version picking themes like moody
 Then service 3 could generate an object or scene? So that when passed to service 4 we get a scene with an aesthetic, then perhaps some additional details based randomly upon
 the previously generated ideas. 
 
+# Design
+
+So the way I see it the best way to approach the project brief is with a total of 5 GCP instances, 4 Ubuntu VM's and one SQL database. The build  stage of the code should flow as follows:
+![image](https://user-images.githubusercontent.com/81659044/121825307-86521e00-cca9-11eb-9d9c-0c6f9a5b1a2c.png)
+
+So as seen Jenkins is launched on the DEV branch, and then the Jenkins pipeline sets up the docker nodes and nginx node on their own VMS, with the already established SQL database there for them to connect to. 
+
+Jenkins then builds and pushes the instances so that they can be retrieved in the deploy stage on each node. With Ansible managing the configuration of the docker swarm for the instances to be deployed on. 
+
+ ## Tools Used:
+Kanban Board: Jira
+- Jira was used for keeping track of the User stories / planning out which features need to be added, I chose Jira for it's ease of use and familiarity, examples of how it's used shown further on in the documentation. But basically, It supports the agile work method of continuous testing and deployment, as it really enables you to break tasks down into whats needed for the next feature to work. 
+
+Version Control: Git
+- Git is used as version control as it's very easy to modify the source code from either the site or any of the GCP instances ran if need be. It also allows rolling updates through the use of webhooks, so any changes to the code / any new commits can be immediately picked up by Jenkins and incorporated into the live application without a disruption to service ( assuming the changes are light, as large changes can disrupt service). 
+
+CI Server: Jenkins
+- Jenkins pipeline is used as the Continuous integration server for this project, it allows the rolling updates from a git hook as previously mentioned, but also allows the pipeline to be defined ( it's steps such as build, test etc) by a file on the Git site, so it's stages themselves can be modified as a rolling update aswell if need be, instead of just the changes to the python code for example. It also allows us to make use of Pytest quite easily by pashing commands through via bash / shell script, which makes the automated testing of our code quite easily, and due to the way it holds onto logs from each pipeline stage we can check the coverage reports through jenkins whilst the application is live, which allows anything not tested to be ammened in a rolling update.
+- The overall pipeline configuration is as follows:
+![image](https://user-images.githubusercontent.com/81659044/121825930-0037d680-ccad-11eb-9fc1-28d40f47d7ac.png)
+So the pipeline / git is gathered in the declarative SCM stage, Requirements like docker, python, pip etc are then installed, the application is tested using pytest to makesure there are no bugs, then the docker images are built and pushed to dockerhub, ansible sets up the swarm / collection of nodes that the application is run across and gets them talking, and finally in the deploy stage the ngninx reverse proxy is established. 
+
+Configuration Management: Ansible
+- Ansible allows the automation of setting up the Docker worker / manager nodes, which significantly cuts down deployment time as it doesnt have to be done manually for each node added, instead all thats needed is modifying the Inventory.yaml / playbook.yaml files to include a new host with the name of the machine. It also helps us set up NGINX / anythig else you may want in an application by simply creating a role for it using the ansible-galaxy commands and filling in the tasks / files section. 
+
+Cloud server: GCP virtual machines
+- Besides being specified in the brief, GCP is a lot easier to setup firewall wise than amazon is and allows the multiple vm instances to be spin up with less effort.
+
+Containerisation: Docker  and Orchestration Tool: Docker Swarm
+- So Docker is used to form the container for each service, a dockerfile containing something along the lines of:
+FROM python:latest
+COPY . /app
+WORKDIR /app
+RUN pip install -r requirements.txt
+EXPOSE 5000
+ENTRYPOINT ["python","app.py"]
+- Is included in each service route, this means each service can be built in an automated way along with any requirements for it to be installed that weren't covered in the initial install phase, meaning that services app has all it's requirements for sure / you don't need to install every requirement on every single instance if they don't all need the same tools, reducing build time for the pipeline as a whole. Docker Swarm is used to form managers and workers than run the docker images / distribute work across a network of connected nodes. 
+
+Reverse Proxy: NGINX
+- NGINX is the load-balancer, it distributes site usage amongst the various containers to maintain smooth operation, so for example if multiple users want to access service 2 simultaneously NGINX will send them to different copies of that container to balance the workload, it also allows reverse proxying so the users can access the app ran on any node from one frontend point.  
+## This is good for security as you can keep more servers closed to the public / have less vunerability points for hackers.
+- NGINX is ran in its own container and directs the data to the docker swarm, it can be thought of like the cashier at macdonalds giving directions to the different line cooks, i.e. if a lot of people want fries more people are making fries, not just one person making more. 
+
+The overall Flow of the project should be as follows: 
+
+![image](https://user-images.githubusercontent.com/81659044/121833248-d6d67500-ccc3-11eb-862b-379eceb535cd.png)
+
+Where the tools are defined as above. I chose not to make the code check if anything was pre-installed and skip, as it only reduced the time taken minimally but adds in additional complexity for the scope of the project. The layout here also places testing directly after installing docker etc, which is useful as any that fail the tests get spotted before the container images are built and pushed, which means they're less likely to be passed into the current active deployment. Naturally the Configuration management ( allocating which instances do what container images) comes after the push, so the absolute latest images can be installed on the nodes in development.
+
+# Use examples
+
+So upon opening the page you see the last 5 entries to the database below and in the top box a new idea
+![image](https://user-images.githubusercontent.com/81659044/121826573-47739680-ccb0-11eb-8ce5-f8a1e637f7c6.png)
+
+And upon hitting the new idea button: 
+
+![image](https://user-images.githubusercontent.com/81659044/121826608-81449d00-ccb0-11eb-96de-717251ef0316.png)
+
+# Pytest Coverage screencaps And Risk Assessment
+
+So below we can see my Risk assessment and Risk assessment matrix, with included matrix. Most of the issues for this project can be taken down to security with respect for ports on GCP, however they are all solvable by managing which ports are open / limiting the number of vulnerable points. Overall I found the points to be very useful, especially the point with regards to keeping to time. I had originally planned to develop a much larger application however that would have got in the way of applying the underlying techniques, so following the minimum viable product we arrived at the app we have here. Having fallen behind again however I would have perhaps raised the likelihood of that risk if doing a similar project again to avoid cutting too much before deadline by utilising better planning. 
+![image](https://user-images.githubusercontent.com/81659044/121832140-48f98a80-ccc1-11eb-9d27-52eadfacc11f.png)
+![image](https://user-images.githubusercontent.com/81659044/121824936-a680dd80-cca7-11eb-80dd-1deec8bd8490.png)
 
 
-
-
-
-# Pytest Coverage screencaps
 
 Below are screenshots showing that each individual service has 100% coverage.
+The tests utlisied patched the response codes from the other services into testable values, and all the tests checked to recieve a 200 response code, as shown below i got 100% coverage for each App route so I am fairly confident that my testing was sufficient, the combination of response code checking and testing whether input values appear in the result should reveal all bugs. 
 
 ![image](https://user-images.githubusercontent.com/81659044/121696148-ac1dce00-cac3-11eb-8e49-841a1b347937.png)
 
@@ -33,10 +93,23 @@ And here's the capture from the test stage of the Jenkins pipeline confirming se
 ![image](https://user-images.githubusercontent.com/81659044/121755851-2b38f380-cb10-11eb-8c5f-65a8987ea45a.png)
 
 
-# Kanban Board and Risk Assessment
+# Kanban Board
 
-Third
+Here's some example use of the Kanban Board showing how it was used to coordinate some of the tasks and stay working to Agile principles during this project. It's not all inclusive and i did add further tasks when it became apparent. 
+
+![image](https://user-images.githubusercontent.com/81659044/121826484-c9af8b00-ccaf-11eb-85f9-66ffcf0bcd6d.png)
+
+![image](https://user-images.githubusercontent.com/81659044/121826459-9d940a00-ccaf-11eb-8921-4bfc3fb83f98.png)
+
 ![image](https://user-images.githubusercontent.com/81659044/121756735-0c882c00-cb13-11eb-97e8-d08ce5158a8c.png)
+
+# Setup
+
+To get this App working you need to install jenkins on a ubuntu virtual machine and setup, then clone this git repository into a jenkins pipeline project / set it up to follow the main branch. 
+After that create instances and setup firewall permissions for those you intend to use, you'll need to specify the machine names in the ansible playbook yaml in order for them to setup correctly but otherwise building the pipeline should work. SSH keys need to be generated for the jenkins use on the jenkins instance and given to the other instances so the swarm can be built and connected together.
+
+# Potential improvements
+- Might be cool to incorporate some existing fortran code i have for writing images to provide a sort of pseudo picture of the idea with some randomised element there too? 
 
 ## Requirements
 
@@ -47,5 +120,9 @@ Third
 - docker compose
 - sql
 - sql_alchemy
-- github ( duh)
-- 
+- github 
+- pytest
+- pip
+- ansible
+- ansible-galaxy
+
