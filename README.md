@@ -111,7 +111,7 @@ After that create instances and setup firewall permissions for those you intend 
 - docker compose
 - sql
 - sql_alchemy
-- github ( duh)
+- github 
 - pytest
 - pip
 - ansible
