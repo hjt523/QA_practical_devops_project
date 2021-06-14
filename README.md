@@ -63,8 +63,8 @@ And upon hitting the new idea button:
 
 # Pytest Coverage screencaps And Risk Assessment
 
-So below we can see my Risk assessment and Risk assessment matrix, I will talk over this during the presentation and ammend with text afterwards for future documentation.
-![image](https://user-images.githubusercontent.com/81659044/121824912-78030280-cca7-11eb-9925-9577ee70ec12.png)
+So below we can see my Risk assessment and Risk assessment matrix, 
+![image](https://user-images.githubusercontent.com/81659044/121832140-48f98a80-ccc1-11eb-9d27-52eadfacc11f.png)
 ![image](https://user-images.githubusercontent.com/81659044/121824936-a680dd80-cca7-11eb-80dd-1deec8bd8490.png)
 
 
